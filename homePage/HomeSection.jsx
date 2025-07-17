@@ -11,19 +11,19 @@ export default function HomeSection() {
       {/* Desktop layout: calendar and club discussions side by side */}
       <div className="hidden md:grid grid-cols-2 gap-6 h-[340px]">
         {/* Mini Calendar */}
-        <HomeCard accent={1} className="flex flex-col items-center justify-center h-full">
+        <HomeCard accent={1} className="flex flex-col items-center justify-center h-full border-8 border-[var(--accent1)] !bg-white">
           <HomeCalendar />
         </HomeCard>
         {/* Club Discussions with 3 placeholders */}
-        <HomeCard accent={1} className="flex flex-col items-center justify-center h-full">
+        <HomeCard accent={1} className="flex flex-col items-center justify-center h-full border-8 border-[var(--accent1)] !bg-white">
           <div className="flex flex-col items-center gap-2 mb-4">
             <MessageCircle className="text-black" size={28} />
             <div className="font-semibold text-neutral-900 text-lg">Club Discussions</div>
           </div>
           <div className="flex flex-col gap-4 w-full px-4">
-            <div className="h-10 bg-white/30 rounded w-full animate-pulse" />
-            <div className="h-10 bg-white/30 rounded w-full animate-pulse" />
-            <div className="h-10 bg-white/30 rounded w-full animate-pulse" />
+            <div className="h-10 bg-[var(--accent1)] rounded w-full" />
+            <div className="h-10 bg-[var(--accent1)] rounded w-full" />
+            <div className="h-10 bg-[var(--accent1)] rounded w-full" />
           </div>
         </HomeCard>
       </div>
