@@ -73,13 +73,3 @@ export default function EventsPage() {
     </div>
   );
 }
-
-// A simple badge component (can be replaced with shadcn/ui badge)
-function Badge({ children, variant }) {
-    const baseClasses = "px-2.5 py-0.5 rounded-full text-xs font-semibold";
-    const variants = {
-        default: "bg-blue-100 text-blue-800",
-        secondary: "bg-gray-100 text-gray-800"
-    }
-    return <span className={`${baseClasses} ${variants[variant]}`}>{children}</span>
-}

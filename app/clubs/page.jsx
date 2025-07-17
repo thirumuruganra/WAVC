@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import { clubs } from '@/lib/mock-data';
 import { Button } from '@/components/ui/button';
-import { ClubCard } from '@/components/ClubCard';
+import { ClubCard } from '@/components/ui/ClubCard';
 
 export default function ClubsPage() {
   return (
