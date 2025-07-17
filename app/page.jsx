@@ -1,7 +1,7 @@
 
-import HomeHeader from "../homePage/HomeHeader";
-import HomeSection from "../homePage/HomeSection";
-import HomeMobileNav from "../homePage/HomeMobileNav";
+import HomeHeader from "../homePage/HomeHeader.jsx";
+import HomeSection from "../homePage/HomeSection.jsx";
+import HomeMobileNav from "../homePage/HomeMobileNav.jsx";
 
 export default function Home() {
   return (
