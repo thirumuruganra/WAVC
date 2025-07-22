@@ -5,9 +5,9 @@ import Link from "next/link";
 
 export default function LoginPage() {
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-white">
-      <div className="w-full max-w-sm p-8 space-y-8 bg-white rounded-lg shadow-md">
-        <div className="text-center">
+    <div className="flex items-center justify-center min-h-screen bg-white">
+      <div className="w-full max-w-sm p-8 space-y-8 text-center bg-white rounded-lg shadow-md">
+        <div>
           <h1 className="text-4xl font-extrabold tracking-tight text-neutral-900">
             WAVC
           </h1>
@@ -19,24 +19,23 @@ export default function LoginPage() {
           <Button
             className="w-full"
             style={{ backgroundColor: 'var(--accent4)' }}
-            onClick={() => signIn("google", { callbackUrl: "/profile" })}
+            onClick={() => {
+              localStorage.setItem("signupRole", "student");
+              signIn("google", { callbackUrl: "/profile" });
+            }}
           >
             Continue as Student with Google
           </Button>
           <Button
             className="w-full"
             variant="outline"
-            onClick={() => signIn("google", { callbackUrl: "/profile" })}
+            onClick={() => {
+              localStorage.setItem("signupRole", "club");
+              signIn("google", { callbackUrl: "/profile" });
+            }}
           >
             Continue as Club Head with Google
           </Button>
-        </div>
-        <div className="mt-6 text-center">
-          <Link href="/signup" passHref>
-            <Button variant="link" className="text-[var(--accent4)]">
-              Click me to sign up
-            </Button>
-          </Link>
         </div>
       </div>
     </div>

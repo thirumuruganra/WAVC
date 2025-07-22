@@ -7,12 +7,12 @@ export const authOptions = {
     GoogleProvider({
       clientId: process.env.GOOGLE_CLIENT_ID,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-      authorization: {
+      authorization: {  
         params: {
           prompt: "consent",
           access_type: "offline",
           response_type: "code",
-          hd: "ssn.edu.in",
+          //hd: "ssn.edu.in",
         },
       },
     }),
@@ -20,9 +20,9 @@ export const authOptions = {
   callbacks: {
     async signIn({ user, account }) {
       if (account.provider === "google") {
-        if (!user.email.endsWith("@ssn.edu.in")) {
-          return false; // Block sign-in for other domains
-        }
+        // if (!user.email.endsWith("@ssn.edu.in")) {
+        //   return false; // Block sign-in for other domains
+        // }
         const existingUser = users.find(
           (dbUser) => dbUser.email === user.email
         );

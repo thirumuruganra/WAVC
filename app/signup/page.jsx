@@ -1,5 +1,7 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -11,31 +13,46 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 
-const StudentSignUp = () => {
+const StudentSignUp = ({ session }) => {
+  const router = useRouter();
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const formData = new FormData(e.target);
+    const data = Object.fromEntries(formData.entries());
+    
+    await fetch('/api/register', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ ...data, email: session.user.email, role: 'student' }),
+    });
+
+    router.push('/profile');
+  };
+
   return (
-    <form className="space-y-4">
+    <form className="space-y-4" onSubmit={handleSubmit}>
       <div className="grid grid-cols-2 gap-4">
         <div className="space-y-2">
           <Label htmlFor="first-name">First name *</Label>
-          <Input id="first-name" placeholder="John" required />
+          <Input name="firstName" id="first-name" placeholder="John" required />
         </div>
         <div className="space-y-2">
           <Label htmlFor="last-name">Last name</Label>
-          <Input id="last-name" placeholder="Doe" />
+          <Input name="lastName" id="last-name" placeholder="Doe" />
         </div>
       </div>
       <div className="space-y-2">
         <Label htmlFor="mobile">Mobile number *</Label>
-        <Input id="mobile" type="tel" placeholder="9876543210" required />
+        <Input name="mobile" id="mobile" type="tel" placeholder="9876543210" required />
       </div>
       <div className="grid grid-cols-2 gap-4">
         <div className="space-y-2">
           <Label htmlFor="year">Graduation Year *</Label>
-          <Input id="year" type="number" placeholder="2027" required min="1900" max="2100" />
+          <Input name="graduationYear" id="year" type="number" placeholder="2027" required min="1900" max="2100" />
         </div>
         <div className="space-y-2">
           <Label htmlFor="department">Department *</Label>
-          <Select required>
+          <Select name="department" required>
             <SelectTrigger>
               <SelectValue placeholder="Select department" />
             </SelectTrigger>
@@ -64,25 +81,40 @@ const StudentSignUp = () => {
   );
 };
 
-const ClubSignUp = () => {
+const ClubSignUp = ({ session }) => {
+  const router = useRouter();
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const formData = new FormData(e.target);
+    const data = Object.fromEntries(formData.entries());
+    
+    await fetch('/api/register', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ ...data, email: session.user.email, role: 'club' }),
+    });
+
+    router.push('/profile');
+  };
+
   return (
-    <form className="space-y-4">
+    <form className="space-y-4" onSubmit={handleSubmit}>
       <div className="space-y-2">
         <Label htmlFor="club-name">Club name *</Label>
-        <Input id="club-name" placeholder="Tech Geeks" required />
+        <Input name="clubName" id="club-name" placeholder="Tech Geeks" required />
       </div>
       <div className="space-y-2">
         <Label htmlFor="logo">Logo *</Label>
-        <Input id="logo" type="file" required />
+        <Input name="logo" id="logo" type="file" required />
       </div>
       <div className="space-y-2">
         <Label htmlFor="insta-id">Insta id *</Label>
-        <Input id="insta-id" placeholder="techgeeks" required />
+        <Input name="instaId" id="insta-id" placeholder="techgeeks" required />
       </div>
       <div className="grid grid-cols-2 gap-4">
         <div className="space-y-2">
           <Label htmlFor="club-department">Department of club *</Label>
-          <Select required>
+          <Select name="department" required>
             <SelectTrigger>
               <SelectValue placeholder="Select department" />
             </SelectTrigger>
@@ -101,7 +133,7 @@ const ClubSignUp = () => {
         </div>
         <div className="space-y-2">
           <Label htmlFor="club-type">Tech or not tech *</Label>
-          <Select required>
+          <Select name="clubType" required>
             <SelectTrigger>
               <SelectValue placeholder="Select type" />
             </SelectTrigger>
@@ -115,6 +147,7 @@ const ClubSignUp = () => {
       <div className="space-y-2">
         <Label htmlFor="description">One line description *</Label>
         <Input
+          name="description"
           id="description"
           placeholder="A club for tech enthusiasts."
           maxLength={150}
@@ -134,6 +167,22 @@ const ClubSignUp = () => {
 
 export default function SignupPage() {
   const [activeTab, setActiveTab] = useState("student");
+  const { data: session, status } = useSession();
+
+  useEffect(() => {
+    const role = localStorage.getItem("signupRole");
+    if (role) {
+      setActiveTab(role);
+    }
+  }, []);
+
+  if (status === "loading") {
+    return <p>Loading...</p>;
+  }
+
+  if (!session) {
+    return <p>You must be signed in to create an account.</p>;
+  }
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-white p-4">
@@ -168,7 +217,7 @@ export default function SignupPage() {
         </div>
 
         <div>
-          {activeTab === "student" ? <StudentSignUp /> : <ClubSignUp />}
+          {activeTab === "student" ? <StudentSignUp session={session} /> : <ClubSignUp session={session} />}
         </div>
       </div>
     </div>

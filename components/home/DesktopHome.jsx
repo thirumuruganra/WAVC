@@ -4,6 +4,7 @@ import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { MessageCircle, Zap, Shuffle, Calendar } from "lucide-react";
 import { events } from "@/lib/mock-data";
 import { EventCard } from "@/components/ui/EventCard.jsx";
+import { Button } from "@/components/ui/button";
 
 export default function DesktopHome() {
   // Assuming 'myClubs' is a list of club IDs the user follows
@@ -15,9 +16,9 @@ export default function DesktopHome() {
     <div className="grid grid-cols-2 gap-6">
       {/* Left Column */}
       <div className="space-y-6">
-        <Card className="h-[350px] flex flex-col">
+        <Card className="h-[390px] flex flex-col">
             <CardHeader>
-                <CardTitle className="flex items-center gap-1.5 pb-0.5"><Calendar /> Event Calendar</CardTitle>
+                <CardTitle className="flex items-center gap-1"><Calendar /> Event Calendar</CardTitle>
             </CardHeader>
             <HomeCalendar />
         </Card>
@@ -33,14 +34,17 @@ export default function DesktopHome() {
 
       {/* Right Column */}
       <div className="space-y-6">
-        <Card className="h-[350px]">
+        <Card className="h-[390px] flex flex-col">
             <CardHeader>
                 <CardTitle className="flex items-center gap-2"><MessageCircle /> Club Discussions</CardTitle>
             </CardHeader>
-            <CardContent className="flex flex-col gap-4 w-full px-4">
+            <CardContent className="flex flex-col gap-4 w-full px-4 flex-grow">
                 <div className="h-10 bg-[var(--accent1)] rounded w-full" />
                 <div className="h-10 bg-[var(--accent1)] rounded w-full" />
                 <div className="h-10 bg-[var(--accent1)] rounded w-full" />
+                <Button asChild className="mt-auto">
+                  <Link href="/clubs">See All Discussions</Link>
+                </Button>
             </CardContent>
         </Card>
         <Card>
