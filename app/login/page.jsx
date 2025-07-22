@@ -5,13 +5,13 @@ import Link from "next/link";
 
 export default function LoginPage() {
   return (
-    <div className="flex items-center justify-center min-h-screen bg-white">
+    <div className="flex items-center justify-center min-h-[calc(100vh-4.5rem)] bg-white">
       <div className="w-full max-w-sm p-8 space-y-8 text-center bg-white rounded-lg shadow-md">
         <div>
-          <h1 className="text-4xl font-extrabold tracking-tight text-neutral-900">
+          <h1 className="text-3xl font-bold text-[var(--accent4)]">
             WAVC
           </h1>
-          <p className="mt-2 text-lg" style={{ color: 'var(--2)' }}>
+          <p className="mt-2 text-lg">
             Welcome! Sign in to continue.
           </p>
         </div>
