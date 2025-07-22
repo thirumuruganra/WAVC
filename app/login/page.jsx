@@ -1,6 +1,7 @@
 "use client";
 import { signIn } from "next-auth/react";
 import { Button } from "@/components/ui/button";
+import Link from "next/link";
 
 export default function LoginPage() {
   return (
@@ -29,6 +30,13 @@ export default function LoginPage() {
           >
             Continue as Club Head with Google
           </Button>
+        </div>
+        <div className="mt-6 text-center">
+          <Link href="/signup" passHref>
+            <Button variant="link" className="text-[var(--accent4)]">
+              Click me to sign up
+            </Button>
+          </Link>
         </div>
       </div>
     </div>

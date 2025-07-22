@@ -1,109 +1,175 @@
 "use client";
 import { useState } from "react";
-import { useRouter } from "next/navigation";
-import { useSession } from "next-auth/react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { users } from "@/lib/mock-data";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+
+const StudentSignUp = () => {
+  return (
+    <form className="space-y-4">
+      <div className="grid grid-cols-2 gap-4">
+        <div className="space-y-2">
+          <Label htmlFor="first-name">First name *</Label>
+          <Input id="first-name" placeholder="John" required />
+        </div>
+        <div className="space-y-2">
+          <Label htmlFor="last-name">Last name</Label>
+          <Input id="last-name" placeholder="Doe" />
+        </div>
+      </div>
+      <div className="space-y-2">
+        <Label htmlFor="mobile">Mobile number *</Label>
+        <Input id="mobile" type="tel" placeholder="9876543210" required />
+      </div>
+      <div className="grid grid-cols-2 gap-4">
+        <div className="space-y-2">
+          <Label htmlFor="year">Graduation Year *</Label>
+          <Input id="year" type="number" placeholder="2027" required min="1900" max="2100" />
+        </div>
+        <div className="space-y-2">
+          <Label htmlFor="department">Department *</Label>
+          <Select required>
+            <SelectTrigger>
+              <SelectValue placeholder="Select department" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="CSE">CSE</SelectItem>
+              <SelectItem value="IT">IT</SelectItem>
+              <SelectItem value="MECH">MECH</SelectItem>
+              <SelectItem value="EEE">EEE</SelectItem>
+              <SelectItem value="ECE">ECE</SelectItem>
+              <SelectItem value="CIVIL">CIVIL</SelectItem>
+              <SelectItem value="CHEM">CHEM</SelectItem>
+              <SelectItem value="MTECH-CSE">M.TECH CSE</SelectItem>
+              <SelectItem value="BME">BME</SelectItem>
+            </SelectContent>
+          </Select>
+        </div>
+      </div>
+      <Button
+        type="submit"
+        className="w-full !mt-6"
+        style={{ backgroundColor: "var(--accent4)" }}
+      >
+        Verify
+      </Button>
+    </form>
+  );
+};
+
+const ClubSignUp = () => {
+  return (
+    <form className="space-y-4">
+      <div className="space-y-2">
+        <Label htmlFor="club-name">Club name *</Label>
+        <Input id="club-name" placeholder="Tech Geeks" required />
+      </div>
+      <div className="space-y-2">
+        <Label htmlFor="logo">Logo *</Label>
+        <Input id="logo" type="file" required />
+      </div>
+      <div className="space-y-2">
+        <Label htmlFor="insta-id">Insta id *</Label>
+        <Input id="insta-id" placeholder="techgeeks" required />
+      </div>
+      <div className="grid grid-cols-2 gap-4">
+        <div className="space-y-2">
+          <Label htmlFor="club-department">Department of club *</Label>
+          <Select required>
+            <SelectTrigger>
+              <SelectValue placeholder="Select department" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="CSE">CSE</SelectItem>
+              <SelectItem value="IT">IT</SelectItem>
+              <SelectItem value="MECH">MECH</SelectItem>
+              <SelectItem value="EEE">EEE</SelectItem>
+              <SelectItem value="ECE">ECE</SelectItem>
+              <SelectItem value="CIVIL">CIVIL</SelectItem>
+              <SelectItem value="CHEM">CHEM</SelectItem>
+              <SelectItem value="MTECH-CSE">M.TECH CSE</SelectItem>
+              <SelectItem value="BME">BME</SelectItem>
+            </SelectContent>
+          </Select>
+        </div>
+        <div className="space-y-2">
+          <Label htmlFor="club-type">Tech or not tech *</Label>
+          <Select required>
+            <SelectTrigger>
+              <SelectValue placeholder="Select type" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="tech">Tech</SelectItem>
+              <SelectItem value="non-tech">Non-Tech</SelectItem>
+            </SelectContent>
+          </Select>
+        </div>
+      </div>
+      <div className="space-y-2">
+        <Label htmlFor="description">One line description *</Label>
+        <Input
+          id="description"
+          placeholder="A club for tech enthusiasts."
+          maxLength={150}
+          required
+        />
+      </div>
+      <Button
+        type="submit"
+        className="w-full !mt-6"
+        style={{ backgroundColor: "var(--accent4)" }}
+      >
+        Verify
+      </Button>
+    </form>
+  );
+};
 
 export default function SignupPage() {
-  const router = useRouter();
-  const { data: session } = useSession();
-  const [formData, setFormData] = useState({
-    name: session?.user?.name || "",
-    phone: "",
-    department: "",
-    year: "",
-  });
-
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
-  };
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    if (!session?.user?.email) {
-      console.error("No email found in session");
-      // Optionally, redirect to login or show an error message
-      return;
-    }
-
-    const newUser = {
-      id: `user-${Date.now()}`, // More unique ID
-      email: session.user.email,
-      role: "student", // default role for now
-      ...formData,
-    };
-
-    // This will only update the in-memory array.
-    // For a real app, you'd send this to a database.
-    users.push(newUser);
-
-    // After "signing up", we need to trigger a session update
-    // to get the new user info (like role) into the session token.
-    // A simple way is to re-trigger the sign-in flow.
-    // However, for this mock setup, we'll just redirect.
-    // In a real app, you might call a custom API endpoint to update the session.
-    router.push("/profile");
-  };
+  const [activeTab, setActiveTab] = useState("student");
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-gray-50">
-      <div className="p-8 bg-white rounded-lg shadow-md w-full max-w-md">
-        <h1 className="text-2xl font-bold text-center mb-6">
-          Complete Your Profile
-        </h1>
-        <form onSubmit={handleSubmit} className="space-y-4">
-          <div>
-            <Label htmlFor="name">Name</Label>
-            <Input
-              id="name"
-              name="name"
-              type="text"
-              required
-              value={formData.name}
-              onChange={handleChange}
-            />
-          </div>
-          <div>
-            <Label htmlFor="phone">Phone Number</Label>
-            <Input
-              id="phone"
-              name="phone"
-              type="tel"
-              required
-              value={formData.phone}
-              onChange={handleChange}
-            />
-          </div>
-          <div>
-            <Label htmlFor="department">Department</Label>
-            <Input
-              id="department"
-              name="department"
-              type="text"
-              required
-              value={formData.department}
-              onChange={handleChange}
-            />
-          </div>
-          <div>
-            <Label htmlFor="year">Year</Label>
-            <Input
-              id="year"
-              name="year"
-              type="number"
-              required
-              value={formData.year}
-              onChange={handleChange}
-            />
-          </div>
-          <Button type="submit" className="w-full">
-            Save and Continue
-          </Button>
-        </form>
+    <div className="flex flex-col items-center justify-center min-h-screen bg-white p-4">
+      <div className="w-full max-w-md p-8 space-y-6 bg-white rounded-lg shadow-md">
+        <div className="text-center">
+          <h1 className="text-3xl font-bold">Create Account</h1>
+          <p className="text-neutral-500">
+            Choose your account type and fill out the form.
+          </p>
+        </div>
+        <div className="flex border-b">
+          <button
+            onClick={() => setActiveTab("student")}
+            className={`flex-1 py-2 text-center font-medium ${
+              activeTab === "student"
+                ? "border-b-2 border-[var(--accent4)] text-[var(--accent4)]"
+                : "text-neutral-500"
+            }`}
+          >
+            Student
+          </button>
+          <button
+            onClick={() => setActiveTab("club")}
+            className={`flex-1 py-2 text-center font-medium ${
+              activeTab === "club"
+                ? "border-b-2 border-[var(--accent4)] text-[var(--accent4)]"
+                : "text-neutral-500"
+            }`}
+          >
+            Club
+          </button>
+        </div>
+
+        <div>
+          {activeTab === "student" ? <StudentSignUp /> : <ClubSignUp />}
+        </div>
       </div>
     </div>
   );
