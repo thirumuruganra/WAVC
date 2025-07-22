@@ -1,17 +1,19 @@
 "use client";
 import { useState } from "react";
-import { useRouter, usePathname } from 'next/navigation';
-import { Menu, Home, Calendar, MessageCircle, User, ChevronLeft } from "lucide-react";
+import { useRouter, usePathname } from "next/navigation";
+import { Menu, ChevronLeft } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { navigationLinks } from "@/lib/navigation";
-import Link from 'next/link';
+import Link from "next/link";
+import { useSession } from "next-auth/react";
 
 export default function HomeHeader() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const router = useRouter();
   const pathname = usePathname();
+  const { data: session, status } = useSession();
 
-  if (pathname === '/') {
+  if (pathname === "/") {
     return (
       <header className="w-full relative pt-8 pb-2">
         <div className="hidden md:block absolute top-8 right-4">
@@ -27,12 +29,36 @@ export default function HomeHeader() {
               className="absolute right-0 top-full mt-2 bg-white border border-neutral-200 rounded-lg shadow-lg py-2 w-48 z-50"
               onMouseLeave={() => setIsMenuOpen(false)}
             >
-              {navigationLinks.map((link, index) => (
-                <Link href={link.href} key={link.name} className={`w-full flex items-center gap-3 px-4 py-3 text-neutral-700 hover:bg-neutral-50 hover:text-[var(--accent${index + 1})]`}>
+              {navigationLinks.map((link, index) => {
+                if (link.name === "Profile") {
+                  const href =
+                    status === "authenticated" ? "/profile" : "/login";
+                  return (
+                    <Link
+                      href={href}
+                      key={link.name}
+                      className={`w-full flex items-center gap-3 px-4 py-3 text-neutral-700 hover:bg-neutral-50 hover:text-[var(--accent${
+                        index + 1
+                      })]`}
+                    >
+                      <link.icon size={20} />
+                      <span>{link.name}</span>
+                    </Link>
+                  );
+                }
+                return (
+                  <Link
+                    href={link.href}
+                    key={link.name}
+                    className={`w-full flex items-center gap-3 px-4 py-3 text-neutral-700 hover:bg-neutral-50 hover:text-[var(--accent${
+                      index + 1
+                    })]`}
+                  >
                     <link.icon size={20} />
                     <span>{link.name}</span>
-                </Link>
-              ))}
+                  </Link>
+                );
+              })}
             </div>
           )}
         </div>

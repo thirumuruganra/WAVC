@@ -1,3 +1,5 @@
+"use client";
+import { signIn } from "next-auth/react";
 import { Button } from "@/components/ui/button";
 
 export default function LoginPage() {
@@ -12,9 +14,22 @@ export default function LoginPage() {
             Welcome! Sign in to continue.
           </p>
         </div>
-        <Button className="w-full" style={{ backgroundColor: 'var(--accent4)' }}>
-          Sign in with Google
-        </Button>
+        <div className="space-y-4">
+          <Button
+            className="w-full"
+            style={{ backgroundColor: 'var(--accent4)' }}
+            onClick={() => signIn("google", { callbackUrl: "/profile" })}
+          >
+            Continue as Student with Google
+          </Button>
+          <Button
+            className="w-full"
+            variant="outline"
+            onClick={() => signIn("google", { callbackUrl: "/profile" })}
+          >
+            Continue as Club Head with Google
+          </Button>
+        </div>
       </div>
     </div>
   );
