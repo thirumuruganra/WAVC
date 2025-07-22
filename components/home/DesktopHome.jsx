@@ -1,6 +1,7 @@
+import Link from "next/link";
 import HomeCalendar from "./HomeCalendar.jsx";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
-import { MessageCircle, Zap, Shuffle } from "lucide-react";
+import { MessageCircle, Zap, Shuffle, Calendar } from "lucide-react";
 import { events } from "@/lib/mock-data";
 import { EventCard } from "@/components/ui/EventCard.jsx";
 
@@ -14,7 +15,10 @@ export default function DesktopHome() {
     <div className="grid grid-cols-2 gap-6">
       {/* Left Column */}
       <div className="space-y-6">
-        <Card className="h-[340px]">
+        <Card className="h-[350px] flex flex-col">
+            <CardHeader>
+                <CardTitle className="flex items-center gap-1.5 pb-0.5"><Calendar /> Event Calendar</CardTitle>
+            </CardHeader>
             <HomeCalendar />
         </Card>
         <Card>
@@ -29,7 +33,7 @@ export default function DesktopHome() {
 
       {/* Right Column */}
       <div className="space-y-6">
-        <Card className="h-[340px]">
+        <Card className="h-[350px]">
             <CardHeader>
                 <CardTitle className="flex items-center gap-2"><MessageCircle /> Club Discussions</CardTitle>
             </CardHeader>
