@@ -1,4 +1,7 @@
+"use client";
+import { signIn } from "next-auth/react";
 import { Button } from "@/components/ui/button";
+import Link from "next/link";
 
 export default function LoginPage() {
   return (
@@ -12,9 +15,29 @@ export default function LoginPage() {
             Welcome! Sign in to continue.
           </p>
         </div>
-        <Button className="w-full" style={{ backgroundColor: 'var(--4)' }}>
-          Sign in with Google
-        </Button>
+        <div className="space-y-4">
+          <Button
+            className="w-full"
+            style={{ backgroundColor: 'var(--accent4)' }}
+            onClick={() => signIn("google", { callbackUrl: "/profile" })}
+          >
+            Continue as Student with Google
+          </Button>
+          <Button
+            className="w-full"
+            variant="outline"
+            onClick={() => signIn("google", { callbackUrl: "/profile" })}
+          >
+            Continue as Club Head with Google
+          </Button>
+        </div>
+        <div className="mt-6 text-center">
+          <Link href="/signup" passHref>
+            <Button variant="link" className="text-[var(--accent4)]">
+              Click me to sign up
+            </Button>
+          </Link>
+        </div>
       </div>
     </div>
   );
