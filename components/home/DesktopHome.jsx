@@ -2,7 +2,7 @@ import HomeCalendar from "./HomeCalendar.jsx";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { MessageCircle, Zap, Shuffle } from "lucide-react";
 import { events } from "@/lib/mock-data";
-import { EventCard } from "@/components/EventCard";
+import { EventCard } from "@/components/ui/EventCard.jsx";
 
 export default function DesktopHome() {
   // Assuming 'myClubs' is a list of club IDs the user follows

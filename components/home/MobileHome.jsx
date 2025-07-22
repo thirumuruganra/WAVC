@@ -1,7 +1,7 @@
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Calendar, MessageCircle, Zap, Shuffle } from "lucide-react";
 import { events } from "@/lib/mock-data";
-import { EventCard } from "@/components/EventCard";
+import { EventCard } from "@/components/ui/EventCard";
 import Link from "next/link";
 
 export default function MobileHome() {
