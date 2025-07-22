@@ -8,11 +8,11 @@ export default function LoginPage() {
           <h1 className="text-4xl font-extrabold tracking-tight text-neutral-900">
             WAVC
           </h1>
-          <p className="mt-2 text-lg" style={{ color: 'var(--accent2)' }}>
+          <p className="mt-2 text-lg" style={{ color: 'var(--2)' }}>
             Welcome! Sign in to continue.
           </p>
         </div>
-        <Button className="w-full" style={{ backgroundColor: 'var(--accent4)' }}>
+        <Button className="w-full" style={{ backgroundColor: 'var(--4)' }}>
           Sign in with Google
         </Button>
       </div>

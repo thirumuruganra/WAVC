@@ -15,6 +15,10 @@
   --color-destructive: var(--destructive);
   --color-accent-foreground: var(--accent-foreground);
   --color-accent: var(--accent);
+  --color-accent-2: var(--accent2);
+  --color-accent-3: var(--accent3);
+  --color-accent-4: var(--accent4);
+  --color-accent-5: var(--accent5);
   --color-muted-foreground: var(--muted-foreground);
   --color-muted: var(--muted);
   --color-secondary-foreground: var(--secondary-foreground);
