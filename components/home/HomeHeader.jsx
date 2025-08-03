@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import { useSession } from "next-auth/react";
+import { useSession, signOut } from "next-auth/react";
 import { navigationLinks } from "@/lib/navigation";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
@@ -20,7 +20,7 @@ export default function HomeHeader() {
           {pathname !== "/" && (
             <Button
               variant="ghost"
-              onClick={() => router.back()}
+              onClick={() => router.push("/")}
               className="flex items-center bg-white rounded-full shadow-md hover:bg-neutral-100 p-2 h-10 pr-4"
             >
               <ChevronLeft className="h-6 w-6" />
@@ -53,17 +53,28 @@ export default function HomeHeader() {
           </nav>
           <div className="hidden md:block ml-6">
             {status === "authenticated" ? (
-              <Link href="/profile">
-                <Avatar>
-                  <AvatarImage
-                    src={session.user.image}
-                    alt={session.user.name}
-                  />
-                  <AvatarFallback>
-                    {session.user.name ? session.user.name[0] : "U"}
-                  </AvatarFallback>
-                </Avatar>
-              </Link>
+              <div className="flex items-center gap-4">
+                <Link href="/profile">
+                  <Avatar>
+                    <AvatarImage
+                      src={session.user.image}
+                      alt={session.user.name}
+                    />
+                    <AvatarFallback>
+                      {session.user.name ? session.user.name[0] : "U"}
+                    </AvatarFallback>
+                  </Avatar>
+                </Link>
+                <Button
+                  variant="outline"
+                  onClick={() => {
+                    localStorage.removeItem("signupRole");
+                    signOut({ callbackUrl: "/login" });
+                  }}
+                >
+                  Sign Out
+                </Button>
+              </div>
             ) : (
               <Button asChild>
                 <Link href="/login">Login</Link>

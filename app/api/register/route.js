@@ -1,24 +1,31 @@
-import { users } from "@/lib/mock-data";
 import { NextResponse } from "next/server";
+import { db } from "@/lib/firebase/firebase";
+import { doc, updateDoc } from "firebase/firestore";
+import { getServerSession } from "next-auth/next";
+import { authOptions } from "../auth/[...nextauth]/route";
 
 export async function POST(req) {
+  const session = await getServerSession(authOptions);
+
+  if (!session) {
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  }
+
   try {
-    const { email, ...details } = await req.json();
+    const body = await req.json();
+    const userId = session.user.id;
+    const userRef = doc(db, "users", userId);
 
-    const userIndex = users.findIndex((user) => user.email === email);
+    const dataToUpdate = {
+      ...body,
+      onboardingComplete: true,
+    };
 
-    if (userIndex === -1) {
-      return NextResponse.json({ message: "User not found" }, { status: 404 });
-    }
+    await updateDoc(userRef, dataToUpdate);
 
-    // Update user with new details
-    users[userIndex] = { ...users[userIndex], ...details, registered: true };
-
-    return NextResponse.json(users[userIndex]);
+    return NextResponse.json({ success: true }, { status: 200 });
   } catch (error) {
-    return NextResponse.json(
-      { message: "An error occurred", error: error.message },
-      { status: 500 }
-    );
+    console.error("Error updating user:", error);
+    return NextResponse.json({ error: "Failed to update user" }, { status: 500 });
   }
 }

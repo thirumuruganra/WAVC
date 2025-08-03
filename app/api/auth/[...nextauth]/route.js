@@ -1,68 +1,41 @@
 import NextAuth from "next-auth";
 import GoogleProvider from "next-auth/providers/google";
-import { users } from "@/lib/mock-data";
+import { db } from "@/lib/firebase/firebase";
+import { doc, getDoc, setDoc } from "firebase/firestore";
 
 export const authOptions = {
   providers: [
     GoogleProvider({
       clientId: process.env.GOOGLE_CLIENT_ID,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-      authorization: {  
-        params: {
-          prompt: "consent",
-          access_type: "offline",
-          response_type: "code",
-          //hd: "ssn.edu.in",
-        },
-      },
     }),
   ],
   callbacks: {
-    async signIn({ user, account }) {
+    async signIn({ user, account, profile }) {
       if (account.provider === "google") {
-        const existingUser = users.find(
-          (dbUser) => dbUser.email === user.email
-        );
-        if (existingUser) {
-          user.id = existingUser.id;
-          user.role = existingUser.role;
-        } else {
-          user.isNewUser = true;
+        const userRef = doc(db, "users", user.id);
+        const userSnap = await getDoc(userRef);
+        if (!userSnap.exists()) {
+          await setDoc(userRef, {
+            id: user.id,
+            email: user.email,
+            name: user.name,
+            image: user.image || null,
+            onboardingComplete: false,
+          });
         }
       }
       return true;
     },
-    async redirect({ url, baseUrl, token }) {
-      if (token?.isNewUser) {
-        return `${baseUrl}/dataform`;
-      }
-      if(url.startsWith(baseUrl)){
-        return `${baseUrl}/profile`;
-      }
-      return url;
-    },
     async session({ session, token }) {
-      session.user.id = token.id;
-      session.user.role = token.role;
+      const userRef = doc(db, "users", token.sub);
+      const userSnap = await getDoc(userRef);
+      const userData = userSnap.data();
+
+      session.user.id = token.sub;
+      session.user.onboardingComplete = userData?.onboardingComplete || false;
       return session;
     },
-    async jwt({ token, user }) {
-      if (user) {
-        const existingUser = users.find(
-          (dbUser) => dbUser.email === user.email
-        );
-        if (existingUser) {
-          token.id = existingUser.id;
-          token.role = existingUser.role;
-        } else {
-          token.isNewUser = true;
-        }
-      }
-      return token;
-    },
-  },
-  pages: {
-    signIn: "/login",
   },
 };
 

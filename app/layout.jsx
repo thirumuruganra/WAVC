@@ -2,6 +2,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import HomeHeader from "@/components/home/HomeHeader";
 import AuthProvider from "./components/AuthProvider";
+import OnboardingCheck from "./components/OnboardingCheck";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -14,18 +15,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata = {
-  title: "WAVC - What's Active in Various Clubs",
-  description: "Stay in the loop. Stay in the club.",
-  icons: {
-    icon: [
-      { url: "/favicon.ico", sizes: "any", type: "image/x-icon" },
-      { url: "/favicon-16x16.png", type: "image/png", sizes: "16x16" },
-      { url: "/favicon-32x32.png", type: "image/png", sizes: "32x32" },
-      { url: "/android-chrome-192x192.png", type: "image/png", sizes: "192x192" },
-    ],
-    apple: "/apple-touch-icon.png",
-  },
-  manifest: "/site.webmanifest",
+  title: "WAVC",
+  description: "What's Active in Various Clubs",
 };
 
 export default function RootLayout({ children }) {
@@ -36,7 +27,7 @@ export default function RootLayout({ children }) {
       >
         <AuthProvider>
           <HomeHeader />
-          {children}
+          <OnboardingCheck>{children}</OnboardingCheck>
         </AuthProvider>
       </body>
     </html>

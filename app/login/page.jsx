@@ -21,7 +21,7 @@ export default function LoginPage() {
             style={{ backgroundColor: 'var(--accent4)' }}
             onClick={() => {
               localStorage.setItem("signupRole", "student");
-              signIn("google");
+              signIn("google", { callbackUrl: "/" });
             }}
           >
             Continue as Student with Google
@@ -31,7 +31,7 @@ export default function LoginPage() {
             variant="outline"
             onClick={() => {
               localStorage.setItem("signupRole", "club");
-              signIn("google");
+              signIn("google", { callbackUrl: "/" });
             }}
           >
             Continue as Club Head with Google

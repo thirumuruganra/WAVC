@@ -1,7 +1,5 @@
 "use client";
-import { useEffect } from "react";
 import { useSession } from "next-auth/react";
-import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -15,7 +13,6 @@ import {
 
 const StudentSignUp = () => {
   const { data: session, status } = useSession({ required: true });
-  const router = useRouter();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -25,13 +22,16 @@ const StudentSignUp = () => {
     const formData = new FormData(e.target);
     const data = Object.fromEntries(formData.entries());
     
-    await fetch('/api/register', {
+    const response = await fetch('/api/register', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ ...data, email: session.user.email, role: 'student' }),
+      body: JSON.stringify({ ...data, role: 'student' }),
     });
 
-    router.push('/profile');
+    if (response.ok) {
+      // Force session refresh to get updated onboardingComplete status
+      window.location.href = '/';
+    }
   };
 
   if (status === "loading") {
@@ -92,7 +92,7 @@ const StudentSignUp = () => {
             className="w-full !mt-6"
             style={{ backgroundColor: "var(--accent4)" }}
           >
-            Verify
+            Submit
           </Button>
         </form>
       </div>
