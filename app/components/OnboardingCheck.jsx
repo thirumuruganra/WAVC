@@ -24,6 +24,13 @@ export default function OnboardingCheck({ children }) {
         router.push(clubFormPath);
       }
     }
+
+    // If a club user is logged in but not verified, redirect them to verification pending page
+    if (session && session.user.onboardingComplete && session.user.role === 'club' && !session.user.isVerified) {
+      if (pathname !== "/verification-pending") {
+        router.push("/verification-pending");
+      }
+    }
   }, [session, status, router, pathname]);
 
   // If the session is loading, don't show anything to prevent flicker

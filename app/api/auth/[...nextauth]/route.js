@@ -22,6 +22,7 @@ export const authOptions = {
             name: user.name,
             image: user.image || null,
             onboardingComplete: false,
+            isVerified: true, // Students are automatically verified, clubs will be set to false during onboarding
           });
         }
       }
@@ -34,6 +35,8 @@ export const authOptions = {
 
       session.user.id = token.sub;
       session.user.onboardingComplete = userData?.onboardingComplete || false;
+      session.user.isVerified = userData?.isVerified || false;
+      session.user.role = userData?.role || null;
       return session;
     },
   },

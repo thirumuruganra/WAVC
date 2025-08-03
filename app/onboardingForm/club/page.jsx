@@ -25,13 +25,16 @@ const ClubSignUp = () => {
     const formData = new FormData(e.target);
     const data = Object.fromEntries(formData.entries());
     
-    await fetch('/api/register', {
+    const response = await fetch('/api/register', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ ...data, email: session.user.email, role: 'club' }),
+      body: JSON.stringify({ ...data, role: 'club' }),
     });
 
-    router.push('/profile');
+    if (response.ok) {
+      // Force session refresh to get updated verification status
+      window.location.href = '/';
+    }
   };
 
   if (status === "loading") {
